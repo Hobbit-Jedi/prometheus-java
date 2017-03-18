@@ -2,28 +2,11 @@ package com.demo.tictactoe;
 
 public class TheGame {
 	
-	private static MoveResult playerTurn(Player aPlayer, Board aBoard, Referee aReferee) throws Exception
-	{
-		MoveResult result = MoveResult.DEADLOCK;
-		if (aBoard.hasMoreSpace())
-		{
-			Move move = aPlayer.turn(aBoard);
-			aReferee.put(move, aBoard); 
-			aBoard.print(); 
-			if (aReferee.isWin(move, aBoard))
-			{ 
-				result = MoveResult.WIN;
-			}
-			else
-			{
-				result = MoveResult.CONTINUE;
-			}
-		}
-		return result;
-	}
-	
 	public static void main(String[] args) throws Exception
 	{
+		Move move;
+		MoveResult moveResult;
+		
 		Referee referee = new Referee(3);
 		
 		Board board = new Board(3, 3);
@@ -36,20 +19,28 @@ public class TheGame {
 		//players[3] = new Player("Четвертый (" + ActionFigure.DOG    + ")", ActionFigure.DOG);
 		//players[4] = new Player("Пятый ("     + ActionFigure.HASH   + ")", ActionFigure.HASH);
 		
-		all:
-		while (true)
+		boolean gameOver = false;
+		while (!gameOver)
 		{
 			for (Player player : players)
 			{
-				switch (playerTurn(player, board, referee))
+				do {				
+					move = player.turn(board);
+					moveResult = referee.commitMove(move, board);
+				} while (moveResult == null); // Пока Игроку есть куда ходить, но он делает некорректные хода.
+				board.print();
+				switch (moveResult)
 				{
 					case WIN:
+						gameOver = true;
 						System.out.println("Игрок " + player + " ВЫИГРАЛ!!!");
-						break all;
+						break;
 					case DEADLOCK:
+						gameOver = true;
 						System.out.println("НИЧЬЯ!!!");
-						break all;
+						break;
 				}
+				if (gameOver) break;
 			}
 		}
 	}

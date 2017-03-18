@@ -3,46 +3,53 @@ package com.demo.tictactoe;
 import java.util.Random;
 
 public class Player {
-	private final ActionFigure m_figure; // Фигура, которой будет играть игрок.
+	private final ActionFigure m_Figure; // Фигура, которой будет играть игрок.
 	private final String m_Name; // Имя игрока.
-	private final Random m_rnd = new Random(); // Генератор случайных чисел.
+	private final Random m_Random = new Random(); // Генератор случайных чисел.
 
 	/**
 	 * Создает игрока, назначая ему игровую фигуру.
 	 * @param aName - Имя игрока.
-	 * @param figure - Фигура, которой будет играть игрок.
+	 * @param aFigure - Фигура, которой будет играть игрок.
 	 */
-	public Player(String aName, ActionFigure figure)
+	public Player(String aName, ActionFigure aFigure)
 	{
-		m_Name = aName;
-		m_figure = figure;
+		m_Name   = aName;
+		m_Figure = aFigure;
 	}
 
 	/**
 	 * Выполнить ход.
-	 * @param board - Игровое поле, на котором идет игра.
+	 * @param aBoard - Игровое поле, на котором идет игра.
 	 * @return - Ход, который собирается делать игрок.
-	 * @throws Exception - Если игрок, в процессе выбора хода, попытается
-	 *                     посмотреть за пределы доски, то вызывает исключение.
 	 */
-	public Move turn(Board board) throws Exception
+	public Move turn(Board aBoard)
 	{
+		final int boardXSize = aBoard.getXSize();
+		final int boardYSize = aBoard.getYSize();
 		Move result = null;
-		if (board.hasMoreSpace())
+		if (aBoard.hasMoreSpace())
 		{
-			int x = m_rnd.nextInt(board.getXSize());
-			int y = m_rnd.nextInt(board.getYSize());
-			if (board.lookAt(x, y) != null)
+			int x = m_Random.nextInt(boardXSize);
+			int y = m_Random.nextInt(boardYSize);
+			if (aBoard.lookAt(x, y) != null)
 			{
 				// Если случайно не попали в пустую клетку, то ставим в первую свободную.
-				outer:
-				for (y = 0; y < board.getYSize(); y++)
-					for (x = 0; x < board.getXSize(); x++)
+				boolean found = false;
+				for (y = 0; y < boardYSize; y++)
+				{
+					for (x = 0; x < boardXSize; x++)
 					{
-						if (board.lookAt(x, y) == null) break outer;
+						if (aBoard.lookAt(x, y) == null)
+						{
+							found = true;
+							break;
+						}
 					}
+					if (found) break;
+				}
 			}
-			result = new Move(x, y, m_figure);
+			result = new Move(x, y, m_Figure);
 		}
 		return result;
 	}

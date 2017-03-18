@@ -1,9 +1,9 @@
 package com.demo.tictactoe;
 
 public class Board {
-	private final int m_xSize; // Горизонтальный размер игрового поля.
-	private final int m_ySize; // Вертикальный размер игрового поля.
-	private final ActionFigure m_field [][]; // Игровое поле.
+	private final int m_XSize; // Горизонтальный размер игрового поля.
+	private final int m_YSize; // Вертикальный размер игрового поля.
+	private final ActionFigure[][] m_Field; // Игровое поле.
 	
 	/**
 	 * Создает игровое поле указанных размеров.
@@ -12,9 +12,9 @@ public class Board {
 	 */
 	public Board(int aXSize, int aYSize)
 	{
-		m_xSize = aXSize;
-		m_ySize = aYSize;
-		m_field = new ActionFigure[m_xSize][m_ySize];
+		m_XSize = aXSize;
+		m_YSize = aYSize;
+		m_Field = new ActionFigure[m_XSize][m_YSize];
 	}
 	
 	/**
@@ -23,7 +23,7 @@ public class Board {
 	 */
 	public int getXSize()
 	{
-		return m_xSize;
+		return m_XSize;
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class Board {
 	 */
 	public int getYSize()
 	{
-		return m_ySize;
+		return m_YSize;
 	}
 	
 	/**
@@ -40,45 +40,37 @@ public class Board {
 	 * @param aX - x-координата клеточки, в которую смотрим.
 	 * @param aY - y-координата клеточки, в которую смотрим.
 	 * @return - Фигура, которая находится на поле по указанным координатам.
-	 * @throws Exception - Если координаты не попадают в поле, то вызывается исключение.
+	 * @throws IllegalArgumentException - Если координаты не попадают в поле, то вызывается исключение.
 	 */
-	public ActionFigure lookAt(int aX, int aY) throws Exception
+	public ActionFigure lookAt(int aX, int aY) throws IllegalArgumentException
 	{
-		if (aX >= 0 && aX < m_xSize && aY >= 0 && aY < m_ySize)
+		if (aX >= 0 && aX < m_XSize && aY >= 0 && aY < m_YSize)
 		{
-			return m_field[aX][aY];
+			return m_Field[aX][aY];
 		}
 		else
 		{
-			throw new Exception("Некорректно переданы координаты в метод Board.lookAt()");
+			throw new IllegalArgumentException("Некорректно переданы координаты в метод Board.lookAt()");
 		}
 	}
 	
 	/**
 	 * Установить фигуру на игровом поле.
+	 * !!!ВНИМАНИЕ!!! Затирает расположенную в указанных координатах старую фигуру.
 	 * @param aX - x-координата клеточки, в которой устанавливаем фигуру.
 	 * @param aY - y-координата клеточки, в которой устанавливаем фигуру.
 	 * @param aFigure - Фигура, которую устанавливаем в указанных координатах.
-	 * @throws Exception - Если координаты выходят за пределы поля,
-	 *                     либо по указанным координатам уже есть какая-либо фигура,
-	 *                     то вызывает исключение.
+	 * @throws IllegalArgumentException - Если координаты выходят за пределы поля, то вызывает исключение.
 	 */
-	public void setAt(int aX, int aY, ActionFigure aFigure) throws Exception
+	public void setAt(int aX, int aY, ActionFigure aFigure) throws IllegalArgumentException
 	{
-		if (aX >= 0 && aX < m_xSize && aY >= 0 && aY < m_ySize)
+		if (aX >= 0 && aX < m_XSize && aY >= 0 && aY < m_YSize)
 		{
-			if (m_field[aX][aY] == null)
-			{
-				m_field[aX][aY] = aFigure;
-			}
-			else
-			{
-				throw new Exception("Клеточка (" + aX + "," + aY + ") уже занята!");
-			}
+			m_Field[aX][aY] = aFigure;
 		}
 		else
 		{
-			throw new Exception("Некорректно переданы координаты в метод Board.setAt()");
+			throw new IllegalArgumentException("Некорректно переданы координаты в метод Board.setAt()");
 		}
 	}
 	
@@ -89,15 +81,13 @@ public class Board {
 	public boolean hasMoreSpace()
 	{
 		boolean result = false;
-		outer:
-		for (int x = 0; x < m_xSize; x++)
+		for (int x = 0; !result && x < m_XSize; x++)
 		{
-			for (int y = 0; y < m_ySize; y++)
+			for (int y = 0; !result && y < m_YSize; y++)
 			{
-				if (m_field[x][y] == null)
+				if (m_Field[x][y] == null)
 				{
 					result = true;
-					break outer;
 				}
 			}
 		}
@@ -109,21 +99,30 @@ public class Board {
 	 */
 	public void print()
 	{
+		final char lineCross      = '+';
+		final char lineHorizontal = '-';
+		final char lineVertical   = '|';
 		System.out.println();
 		String divideLine = "";
-		for (int x = 0; x < m_xSize; x++)
+		for (int x = 0; x < m_XSize; x++)
 		{
-			divideLine += "+-";
+			divideLine += "" + lineCross + lineHorizontal;
 		}
-		divideLine += "+";
-		for (int y = 0; y < m_ySize; y++)
+		divideLine += lineCross;
+		for (int y = 0; y < m_YSize; y++)
 		{
 			String fieldLine = "";
-			for (int x = 0; x < m_xSize; x++)
+			for (int x = 0; x < m_XSize; x++)
 			{
-				fieldLine  += "|" + (m_field[x][y]!=null?m_field[x][y]:" ");
+				fieldLine	+= "" + lineVertical
+							+	(	m_Field[x][y] != null
+									?
+									m_Field[x][y]
+									:
+									" "
+								);
 			}
-			fieldLine  += "|";
+			fieldLine  += lineVertical;
 			System.out.println(divideLine);
 			System.out.println(fieldLine);
 		}
