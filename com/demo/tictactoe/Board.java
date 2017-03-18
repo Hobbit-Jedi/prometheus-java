@@ -14,7 +14,19 @@ public class Board {
 	{
 		m_XSize = aXSize;
 		m_YSize = aYSize;
-		m_Field = new ActionFigure[m_XSize][m_YSize];
+		m_Field = new ActionFigure[m_YSize][m_XSize];
+	}
+	
+	public Board(Board aBoard)
+	{
+		this(aBoard.getXSize(), aBoard.getYSize());
+		for (int y = 0; y < m_YSize; y++)
+		{
+			for (int x = 0; x < m_XSize; x++)
+			{
+				m_Field[y][x] = aBoard.lookAt(x, y);
+			}
+		}
 	}
 	
 	/**
@@ -46,7 +58,7 @@ public class Board {
 	{
 		if (aX >= 0 && aX < m_XSize && aY >= 0 && aY < m_YSize)
 		{
-			return m_Field[aX][aY];
+			return m_Field[aY][aX];
 		}
 		else
 		{
@@ -66,7 +78,7 @@ public class Board {
 	{
 		if (aX >= 0 && aX < m_XSize && aY >= 0 && aY < m_YSize)
 		{
-			m_Field[aX][aY] = aFigure;
+			m_Field[aY][aX] = aFigure;
 		}
 		else
 		{
@@ -81,11 +93,11 @@ public class Board {
 	public boolean hasMoreSpace()
 	{
 		boolean result = false;
-		for (int x = 0; !result && x < m_XSize; x++)
+		for (int y = 0; !result && y < m_YSize; y++)
 		{
-			for (int y = 0; !result && y < m_YSize; y++)
+			for (int x = 0; !result && x < m_XSize; x++)
 			{
-				if (m_Field[x][y] == null)
+				if (m_Field[y][x] == null)
 				{
 					result = true;
 				}
@@ -115,9 +127,9 @@ public class Board {
 			for (int x = 0; x < m_XSize; x++)
 			{
 				fieldLine	+= "" + lineVertical
-							+	(	m_Field[x][y] != null
+							+	(	m_Field[y][x] != null
 									?
-									m_Field[x][y]
+									m_Field[y][x]
 									:
 									" "
 								);

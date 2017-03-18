@@ -25,7 +25,7 @@ public class TheGame {
 			for (Player player : players)
 			{
 				do {			
-					move = player.turn(board);
+					move = player.turn(new Board(board));
 					moveResult = referee.commitMove(player, move, board);
 				} while (moveResult == null); // Пока Игроку есть куда ходить, но он делает некорректные хода.
 				board.print();
