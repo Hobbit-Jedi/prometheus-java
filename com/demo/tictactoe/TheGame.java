@@ -2,7 +2,7 @@ package com.demo.tictactoe;
 
 public class TheGame {
 	
-	public static void main(String[] args) throws Exception
+	public static void main(String[] args)
 	{
 		Move move;
 		MoveResult moveResult;
