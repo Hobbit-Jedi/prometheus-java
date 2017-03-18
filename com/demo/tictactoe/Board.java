@@ -17,6 +17,10 @@ public class Board {
 		m_Field = new ActionFigure[m_YSize][m_XSize];
 	}
 	
+	/**
+	 * Создает копию игрового поля.
+	 * @param aBoard - игровое поле, копия которого создается.
+	 */
 	public Board(Board aBoard)
 	{
 		this(aBoard.getXSize(), aBoard.getYSize());
