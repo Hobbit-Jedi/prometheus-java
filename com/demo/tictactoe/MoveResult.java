@@ -10,7 +10,8 @@ package com.demo.tictactoe;
  * @author Hobbit Jedi
  */
 public enum MoveResult {
-	CONTINUE, // Игра продолжается.
-	WIN,      // Игрок выиграл.
-	DEADLOCK  // Ничья.
+	CONTINUE,         // Игра продолжается.
+	WIN,              // Игрок выиграл.
+	DISQUALIFICATION, // Игрок дисквалифицирован.
+	DEADLOCK          // Ничья.
 }

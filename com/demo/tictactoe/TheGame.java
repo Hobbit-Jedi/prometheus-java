@@ -7,7 +7,7 @@ public class TheGame {
 		Move move;
 		MoveResult moveResult;
 		
-		Referee referee = new Referee(3);
+		Referee referee = new Referee(3, 5);
 		
 		Board board = new Board(3, 3);
 		
@@ -24,20 +24,24 @@ public class TheGame {
 		{
 			for (Player player : players)
 			{
-				do {				
+				do {			
 					move = player.turn(board);
-					moveResult = referee.commitMove(move, board);
+					moveResult = referee.commitMove(player, move, board);
 				} while (moveResult == null); // Пока Игроку есть куда ходить, но он делает некорректные хода.
 				board.print();
 				switch (moveResult)
 				{
 					case WIN:
 						gameOver = true;
-						System.out.println("Игрок " + player + " ВЫИГРАЛ!!!");
+						System.out.println("ВЫИГРАЛ Игрок " + player + "!!!");
 						break;
 					case DEADLOCK:
 						gameOver = true;
 						System.out.println("НИЧЬЯ!!!");
+						break;
+					case DISQUALIFICATION:
+						gameOver = true;
+						System.out.println("ДИСКВАЛИФИЦИРОВАН Игрок " + player + "!!!");
 						break;
 				}
 				if (gameOver) break;

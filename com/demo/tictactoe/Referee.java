@@ -1,11 +1,22 @@
 package com.demo.tictactoe;
 
 public class Referee {
-	private final int m_NumToLineForWin; // Количество фигур в линию для победы.
+	private final int m_NumToLineForWin;    // Количество фигур в линию для победы.
+	private final int m_MaxBadTurnsAllowed; // Допустимое количество попыток неправильно походить до дисквалификации игрока.
+	private Player m_LastPlayer;            // Игрок, который ходил последним. Хранится между ходами.
+	private int m_PlayerTurnTriesCounter;   // Счетчик попыток хода игрока. Если игрок тупит и долго не может сделать правильный ход, то его дисквалифицируют.
 	
-	public Referee(int aNumToLineForWin)
+	/**
+	 * Создает судью, который будет следить за выполнением правил игры.
+	 * @param aNumToLineForWin - Количество фигур, которые нужно выстроить в линию, чтобы выиграть.
+	 * @param aMaxBadTurnsAllowed - Количество попыток некорректно походить, до дисквалификации игрока.
+	 */
+	public Referee(int aNumToLineForWin, int aMaxBadTurnsAllowed)
 	{
 		m_NumToLineForWin = aNumToLineForWin;
+		m_MaxBadTurnsAllowed = aMaxBadTurnsAllowed;
+		m_LastPlayer = null;
+		m_PlayerTurnTriesCounter = 0;
 	}
 	
 	/**
@@ -16,31 +27,41 @@ public class Referee {
 	 * @return - Результат выполнения хода.
 	 *           Если ход недопустим, то возвращает null.
 	 */
-	public MoveResult commitMove(Move aMove, Board aBoard)
+	public MoveResult commitMove(Player aPlayer, Move aMove, Board aBoard)
 	{
 		MoveResult result = null;
+		if (aPlayer != m_LastPlayer)
+		{
+			m_LastPlayer = aPlayer;
+			m_PlayerTurnTriesCounter = 1;
+		}
+		else
+		{
+			m_PlayerTurnTriesCounter++;
+		}
 		if (aMove != null)
 		{
 			// Проверим допустимость хода.
 			int x = aMove.getX();
 			int y = aMove.getY();
+			ActionFigure currentFigure = aMove.getFigure();
 			if (aBoard.lookAt(x, y) == null)
 			{
 				// Если ход допустим, то отметим его на доске.
-				aBoard.setAt(x, y, aMove.getFigure());
-			}
-			// Определим результат хода.
-			if (isWin(aMove, aBoard))
-			{
-				result = MoveResult.WIN;
-			}
-			else if (aBoard.hasMoreSpace())
-			{
-				result = MoveResult.CONTINUE;
-			}
-			else
-			{
-				result = MoveResult.DEADLOCK;
+				aBoard.setAt(x, y, currentFigure);
+				// Определим результат хода.
+				if (isWin(aMove, aBoard))
+				{
+					result = MoveResult.WIN;
+				}
+				else if (aBoard.hasMoreSpace())
+				{
+					result = MoveResult.CONTINUE;
+				}
+				else
+				{
+					result = MoveResult.DEADLOCK;
+				}
 			}
 		}
 		else
@@ -49,6 +70,10 @@ public class Referee {
 			{
 				result = MoveResult.DEADLOCK;
 			}
+		}
+		if (result == null && m_PlayerTurnTriesCounter >= m_MaxBadTurnsAllowed)
+		{
+			result = MoveResult.DISQUALIFICATION;
 		}
 		return result;
 	}
