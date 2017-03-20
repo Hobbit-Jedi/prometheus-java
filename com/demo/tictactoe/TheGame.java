@@ -13,11 +13,11 @@ public class TheGame {
 		
 		//Player players[]  = new Player[5];
 		Player players[]  = new Player[2];
-		players[0] = new Player("Первый ("    + ActionFigure.CROSS  + ")", ActionFigure.CROSS);
-		players[1] = new Player("Второй ("    + ActionFigure.NOUGHT + ")", ActionFigure.NOUGHT);
-		//players[2] = new Player("Третий ("    + ActionFigure.STAR   + ")", ActionFigure.STAR);
-		//players[3] = new Player("Четвертый (" + ActionFigure.DOG    + ")", ActionFigure.DOG);
-		//players[4] = new Player("Пятый ("     + ActionFigure.HASH   + ")", ActionFigure.HASH);
+		players[0] = new PlayerRandom("Первый ("    + ActionFigure.CROSS  + ")", ActionFigure.CROSS);
+		players[1] = new PlayerRandom("Второй ("    + ActionFigure.NOUGHT + ")", ActionFigure.NOUGHT);
+		//players[2] = new PlayerRandom("Третий ("    + ActionFigure.STAR   + ")", ActionFigure.STAR);
+		//players[3] = new PlayerRandom("Четвертый (" + ActionFigure.DOG    + ")", ActionFigure.DOG);
+		//players[4] = new PlayerRandom("Пятый ("     + ActionFigure.HASH   + ")", ActionFigure.HASH);
 		
 		boolean gameOver = false;
 		while (!gameOver)
