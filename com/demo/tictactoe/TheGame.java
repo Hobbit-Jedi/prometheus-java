@@ -44,6 +44,7 @@ public class TheGame {
 		createPlayers();
 		System.out.println();
 		System.out.println("Игра началась!");
+		board.print();
 		
 		boolean gameOver = false;
 		while (!gameOver)

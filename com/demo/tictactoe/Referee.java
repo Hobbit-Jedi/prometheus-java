@@ -45,24 +45,31 @@ public class Referee {
 			// Проверим допустимость хода.
 			int x = aMove.getX();
 			int y = aMove.getY();
-			ActionFigure currentFigure = aMove.getFigure();
-			if (aBoard.lookAt(x, y) == null)
+			if (x >= 0 && x < aBoard.getXSize() && y >= 0 && y < aBoard.getXSize())
 			{
-				// Если ход допустим, то отметим его на доске.
-				aBoard.setAt(x, y, currentFigure);
-				// Определим результат хода.
-				if (isWin(aMove, aBoard))
+				ActionFigure currentFigure = aMove.getFigure();
+				if (aBoard.lookAt(x, y) == null)
 				{
-					result = MoveResult.WIN;
+					// Если ход допустим, то отметим его на доске.
+					aBoard.setAt(x, y, currentFigure);
+					// Определим результат хода.
+					if (isWin(aMove, aBoard))
+					{
+						result = MoveResult.WIN;
+					}
+					else if (aBoard.hasMoreSpace())
+					{
+						result = MoveResult.CONTINUE;
+					}
+					else
+					{
+						result = MoveResult.DEADLOCK;
+					}
 				}
-				else if (aBoard.hasMoreSpace())
-				{
-					result = MoveResult.CONTINUE;
-				}
-				else
-				{
-					result = MoveResult.DEADLOCK;
-				}
+			}
+			else
+			{
+				System.out.println("Игрок " + aPlayer + " некорректно указал координаты хода: " + aMove);
 			}
 		}
 		else
@@ -70,6 +77,10 @@ public class Referee {
 			if (!aBoard.hasMoreSpace())
 			{
 				result = MoveResult.DEADLOCK;
+			}
+			else
+			{
+				System.out.println("Игрок " + aPlayer + " не знает куда ему пойти.");
 			}
 		}
 		if (result == null && m_MaxBadTurnsAllowed >= 0 && m_PlayerTurnTriesCounter >= m_MaxBadTurnsAllowed)
