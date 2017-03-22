@@ -64,4 +64,11 @@ public class PlayerHuman extends Player {
 		}
 		return result;
 	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize(); //To change body of generated methods, choose Tools | Templates.
+		SCANNER.close();
+	}
+	
 }
