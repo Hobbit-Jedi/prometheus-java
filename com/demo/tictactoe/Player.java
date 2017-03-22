@@ -20,7 +20,12 @@ public abstract class Player {
 		m_Name   = aName;
 		m_Figure = aFigure;
 	}
-
+	
+	public ActionFigure getFigure()
+	{
+		return m_Figure;
+	}
+	
 	@Override
 	public String toString()
 	{

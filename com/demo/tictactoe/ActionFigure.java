@@ -1,11 +1,11 @@
 package com.demo.tictactoe;
 
 public enum ActionFigure {
-	NOUGHT('0'), //нолик
 	CROSS('X'),  //крестик
+	NOUGHT('0'), //нолик
 	STAR('*'),   //звездочка
-	DOG('@'),    //собачка
-	HASH('#')    //решетка
+	HASH('#'),   //решетка
+	DOG('@')     //собачка
 	;
 	
 	private final char m_Image; // Отображаемый символ.

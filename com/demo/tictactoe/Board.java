@@ -118,31 +118,67 @@ public class Board {
 		final char lineCross      = '+';
 		final char lineHorizontal = '-';
 		final char lineVertical   = '|';
-		System.out.println();
-		String divideLine = "";
+		int xCoordinateLength = Coordinates.indexToCoordinate(m_XSize-1).length();
+		int yCoordinateLength = new StringBuilder().append(m_YSize-1).length();
+		// Преобразуем числовые X-индексы в буквенные координаты.
+		String[] xCoordinates = new String[m_XSize];
 		for (int x = 0; x < m_XSize; x++)
 		{
-			divideLine += "" + lineCross + lineHorizontal;
+			xCoordinates[x] = Coordinates.indexToCoordinate(x);
 		}
-		divideLine += lineCross;
-		for (int y = 0; y < m_YSize; y++)
+		// Сформируем горизонтальную разделительную линию таблицы.
+		StringBuilder divideLine = new StringBuilder();
+		for (int j = 0; j < yCoordinateLength; j++)
 		{
-			String fieldLine = "";
+			divideLine.append(lineHorizontal);
+		}
+		for (int x = 0; x < m_XSize; x++)
+		{
+			divideLine.append(lineCross).append(lineHorizontal);
+		}
+		divideLine.append(lineCross);
+		// Начинаем вывод.
+		System.out.println();
+		// Выведем X-координаты.
+		for (int i = 0; i < xCoordinateLength; i++)
+		{
+			for (int j = 0; j < yCoordinateLength; j++)
+			{
+				System.out.print(" ");
+			}
 			for (int x = 0; x < m_XSize; x++)
 			{
-				fieldLine	+= "" + lineVertical
-							+	(	m_Field[y][x] != null
+				System.out.print(lineVertical);
+				if ( i < xCoordinates[x].length())
+				{
+					System.out.print(xCoordinates[x].charAt(i));
+				}
+				else
+				{
+					System.out.print(" ");
+				}
+			}
+			System.out.println(lineVertical);
+		}
+		// Выводим разделительную горизонтальную черту.
+		System.out.println(divideLine);
+		// Выводим само поле.
+		for (int y = 0; y < m_YSize; y++)
+		{
+			System.out.format("%"+yCoordinateLength+"d", y); // Выводим Y-координату
+			for (int x = 0; x < m_XSize; x++)
+			{
+				System.out.print(lineVertical);
+				System.out.print(	m_Field[y][x] != null
 									?
 									m_Field[y][x]
 									:
 									" "
 								);
 			}
-			fieldLine  += lineVertical;
+			System.out.println(lineVertical);
 			System.out.println(divideLine);
-			System.out.println(fieldLine);
 		}
-		System.out.println(divideLine);
 	}
-
+	
 }

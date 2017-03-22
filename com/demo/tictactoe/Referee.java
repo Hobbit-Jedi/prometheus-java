@@ -2,7 +2,7 @@ package com.demo.tictactoe;
 
 public class Referee {
 	private final int m_NumToLineForWin;    // Количество фигур в линию для победы.
-	private final int m_MaxBadTurnsAllowed; // Допустимое количество попыток неправильно походить до дисквалификации игрока.
+	private final int m_MaxBadTurnsAllowed; // Допустимое количество попыток неправильно походить до дисквалификации игрока (<0 - неограничено).
 	private Player m_LastPlayer;            // Игрок, который ходил последним. Хранится между ходами.
 	private int m_PlayerTurnTriesCounter;   // Счетчик попыток хода игрока. Если игрок тупит и долго не может сделать правильный ход, то его дисквалифицируют.
 	
@@ -72,7 +72,7 @@ public class Referee {
 				result = MoveResult.DEADLOCK;
 			}
 		}
-		if (result == null && m_PlayerTurnTriesCounter >= m_MaxBadTurnsAllowed)
+		if (result == null && m_MaxBadTurnsAllowed >= 0 && m_PlayerTurnTriesCounter >= m_MaxBadTurnsAllowed)
 		{
 			result = MoveResult.DISQUALIFICATION;
 		}
