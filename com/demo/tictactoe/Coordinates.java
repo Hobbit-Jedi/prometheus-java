@@ -1,44 +1,80 @@
 package com.demo.tictactoe;
 
+/**
+ * Описывает координаты на игровой доске.
+ * @author Hobbit Jedi
+ */
 public class Coordinates {
 	private final int mX; // x-координата.
 	private final int mY; // y-координата.
 
-	public Coordinates()
-	{
-		this(0, 0);
-	}
-	
+	/**
+	 * Создать координаты.
+	 * @param aX - x-коодината (числовая).
+	 * @param aY - y-координата (числовая).
+	 */
 	public Coordinates(int aX, int aY)
 	{
 		mX = aX;
 		mY = aY;
 	}
 	
+	/**
+	 * Получить x-координату в числовом виде.
+	 * @return - X-координата в числовом виде.
+	 */
 	public int getX()
 	{
 		return mX;
 	}
 	
+	/**
+	 * Получить y-координату в числовом виде.
+	 * @return - Y-координата в числовом виде.
+	 */
 	public int getY()
 	{
 		return mY;
 	}
 	
+	/**
+	 * Получить x-координату в буквенном виде.
+	 * @return - X-координата в буквенном виде.
+	 */
 	public String getXAsString()
 	{
 		return indexToCoordinate(mX);
 	}
 	
+	/**
+	 * Получить y-координату в буквенном виде.
+	 * @return - Y-координата в буквенном виде.
+	 */
 	public String getYAsString()
 	{
 		return indexToCoordinate(mY);
 	}
 	
+	/**
+	 * Проверить совпадают ли координаты текущего объекта с другим объектом координат.
+	 * @param obj - Координаты, с которыми выполняем сравнение текущего объекта.
+	 * @return - Признак того, что координаты указанного объекта координат совпадают с координатами текущего объектом координат.
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		boolean result = (obj instanceof Coordinates) && (mX == ((Coordinates) obj).getX()) && (mY == ((Coordinates) obj).getY());
+		return result;
+	}
+	
+	/**
+	 * Получить строковое представление координат,
+	 * @return - строковое представление координат.
+	 */
 	@Override
 	public String toString()
 	{
-		return "" + getXAsString() + "," + mY;
+		return new StringBuilder(getXAsString()).append(",").append(mY).toString();
 	}
 	
 /**

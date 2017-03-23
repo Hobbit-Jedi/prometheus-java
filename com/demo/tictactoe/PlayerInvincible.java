@@ -25,7 +25,7 @@ public class PlayerInvincible extends Player {
 	public Move turn(Board aBoard)
 	{
 		//TODO: реализовать.
-		Move result = new Move(0,0, m_Figure); //TODO: убрать эту отладочную заглушку.
+		Move result = new Move(0,0, this); //TODO: убрать эту отладочную заглушку.
 		return result;
 	}
 }

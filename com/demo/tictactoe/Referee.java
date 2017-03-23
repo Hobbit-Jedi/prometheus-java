@@ -45,13 +45,12 @@ public class Referee {
 			// Проверим допустимость хода.
 			int x = aMove.getX();
 			int y = aMove.getY();
-			if (x >= 0 && x < aBoard.getXSize() && y >= 0 && y < aBoard.getXSize())
+			if (x >= 0 && x < aBoard.getXSize() && y >= 0 && y < aBoard.getYSize())
 			{
-				ActionFigure currentFigure = aMove.getFigure();
 				if (aBoard.lookAt(x, y) == null)
 				{
 					// Если ход допустим, то отметим его на доске.
-					aBoard.setAt(x, y, currentFigure);
+					aBoard.setAt(x, y, aMove.getFigure());
 					// Определим результат хода.
 					if (isWin(aMove, aBoard))
 					{

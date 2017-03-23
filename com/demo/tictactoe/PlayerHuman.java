@@ -23,9 +23,9 @@ public class PlayerHuman extends Player {
 	public Move turn(Board aBoard)
 	{
 		System.out.println();
-		System.out.println("Ходит игрок " + m_Name);
+		System.out.println("Ходит игрок " + mName);
 		Coordinates coordinates = scanCoordinates(aBoard.getXSize(), aBoard.getYSize());
-		return new Move(coordinates.getX(), coordinates.getY(), m_Figure);
+		return new Move(coordinates, this);
 	}
 	
 	private Coordinates scanCoordinates(int aXSize, int aYSize)

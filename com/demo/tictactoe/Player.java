@@ -7,8 +7,8 @@ package com.demo.tictactoe;
  * @author Hobbit Jedi
  */
 public abstract class Player {
-	protected final ActionFigure m_Figure; // Фигура, которой будет играть игрок.
-	protected final String m_Name;         // Имя игрока.
+	protected final ActionFigure mFigure; // Фигура, которой будет играть игрок.
+	protected final String mName;         // Имя игрока.
 
 	/**
 	 * Создает игрока, назначая ему игровую фигуру.
@@ -17,19 +17,27 @@ public abstract class Player {
 	 */
 	public Player(String aName, ActionFigure aFigure)
 	{
-		m_Name   = aName;
-		m_Figure = aFigure;
+		mName   = aName;
+		mFigure = aFigure;
 	}
 	
+	/**
+	 * Получить фигуру, которой ходит игрок.
+	 * @return - Фигура, которой ходит игрок.
+	 */
 	public ActionFigure getFigure()
 	{
-		return m_Figure;
+		return mFigure;
 	}
 	
+	/**
+	 * Получить строковое представление игрока.
+	 * @return - Строковое представление игрока.
+	 */
 	@Override
 	public String toString()
 	{
-		return m_Name;
+		return mName;
 	}
 	
 	/**

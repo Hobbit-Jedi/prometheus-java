@@ -59,7 +59,7 @@ public class PlayerRandom extends Player {
 					if (found) break;
 				}
 			}
-			result = new Move(x, y, m_Figure);
+			result = new Move(x, y, this);
 		}
 		return result;
 	}

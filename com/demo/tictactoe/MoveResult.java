@@ -1,7 +1,7 @@
 package com.demo.tictactoe;
 
 /**
- * Результат хода игрока.
+ * Описывает результат хода игрока.
  * @author Hobbit Jedi
  */
 public enum MoveResult {

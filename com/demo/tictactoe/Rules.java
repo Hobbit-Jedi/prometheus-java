@@ -12,11 +12,27 @@ public class Rules {
 	private final int mNumOfPlayers;     // Количество играющих игроков.
 	private final Player[] mPlayers;     // Порядок хода игроков.
 	
+	/**
+	 * Создать правила по умолчанию.
+	 * Классические крестики-нолики.
+	 * Поле 3х3.
+	 * Для победы нужно поставить три фигуры в ряд.
+	 * Играют два игрока.
+	 * Разрешено 10 попыток подряд некорректно походить.
+	 */
 	public Rules()
 	{
 		this(3, 3, 3, 10, 2);
 	}
 	
+	/**
+	 * Создать правила игры.
+	 * @param aBoardXSize - Ширина игровой доски.
+	 * @param aBoardYSize - Высота игровой доски.
+	 * @param aWinLineLength - Количество фигур в линии, чтобы одержать победу.
+	 * @param aNumErrorsAllowed - Допустимое количество попыток подряд сделать некорректный ход до получения дисквалификации.
+	 * @param aNumOfPlayers - Количество играющих игроков.
+	 */
 	public Rules(int aBoardXSize, int aBoardYSize, int aWinLineLength, int aNumErrorsAllowed, int aNumOfPlayers)
 	{
 		mBoardXSize       = aBoardXSize;

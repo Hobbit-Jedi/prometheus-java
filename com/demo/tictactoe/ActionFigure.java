@@ -1,5 +1,9 @@
 package com.demo.tictactoe;
 
+/**
+ * Описывает фигуру, которой делаются хода.
+ * @author Hobbit Jedi
+ */
 public enum ActionFigure {
 	CROSS('X'),  //крестик
 	NOUGHT('0'), //нолик
@@ -8,16 +12,20 @@ public enum ActionFigure {
 	DOG('@')     //собачка
 	;
 	
-	private final char m_Image; // Отображаемый символ.
+	private final char mImage; // Отображаемый символ.
 	
 	private ActionFigure(char aImage)
 	{
-		m_Image = aImage;
+		mImage = aImage;
 	}
 	
+	/**
+	 * Получить строковое представление фигуры.
+	 * @return - Строковое представление фигуры.
+	 */
 	@Override
 	public String toString()
 	{
-		return "" + m_Image;
+		return String.valueOf(mImage);
 	}
 }

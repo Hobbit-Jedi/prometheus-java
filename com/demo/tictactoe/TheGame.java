@@ -1,5 +1,7 @@
 package com.demo.tictactoe;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -45,38 +47,56 @@ public class TheGame {
 			System.out.println("--------------");
 			System.out.println("Игра началась!");
 			board.print();
-
-			boolean gameOver = false;
+			
+			ArrayList<Player> players = new ArrayList<>();
+			for (Player rulesPlayer : rules.getPlayers())
+			{
+				if (rulesPlayer != null)
+				{
+					players.add(rulesPlayer);
+				}
+			}
+			boolean gameOver = (players.size() < 2); // Если в игре меньше двух игроков, то играть смысла нет.
 			while (!gameOver)
 			{
-				for (Player player : rules.getPlayers())
+				for (int i = 0; i < players.size(); i++)
 				{
-					do {			
-						move = player.turn(new Board(board));
-						System.out.println();
-						System.out.println("Игрок " + player + " ходит " + move);
-						moveResult = referee.commitMove(player, move, board);
-					} while (moveResult == null); // Пока Игроку есть куда ходить, но он делает некорректные хода.
-					board.print();
-					switch (moveResult)
+					Player player = players.get(i);
+					if (player != null)
 					{
-						case WIN:
-							gameOver = true;
+						do {			
+							move = player.turn(new Board(board));
 							System.out.println();
-							System.out.println("ВЫИГРАЛ Игрок " + player + "!!!");
-							break;
-						case DEADLOCK:
-							gameOver = true;
-							System.out.println();
-							System.out.println("НИЧЬЯ!!!");
-							break;
-						case DISQUALIFICATION:
-							gameOver = true;
-							System.out.println();
-							System.out.println("ДИСКВАЛИФИЦИРОВАН Игрок " + player + "!!!");
-							break;
+							System.out.println("Игрок " + player + " ходит " + move);
+							moveResult = referee.commitMove(player, move, board);
+						} while (moveResult == null); // Пока Игроку есть куда ходить, но он делает некорректные хода.
+						board.print();
+						switch (moveResult)
+						{
+							case WIN:
+								gameOver = true;
+								System.out.println();
+								System.out.println("ВЫИГРАЛ Игрок " + player + "!!!");
+								break;
+							case DEADLOCK:
+								gameOver = true;
+								System.out.println();
+								System.out.println("НИЧЬЯ!!!");
+								break;
+							case DISQUALIFICATION:
+								players.remove(player);
+								System.out.println();
+								System.out.println("ДИСКВАЛИФИЦИРОВАН Игрок " + player + "!!!");
+								if (players.size() <= 1)
+								{
+									gameOver = true;
+									System.out.println();
+									System.out.println("ВЫИГРАЛ Игрок " + players.get(0) + "!!!");
+								}
+								break;
+						}
+						if (gameOver) break;
 					}
-					if (gameOver) break;
 				}
 			}
 		}
