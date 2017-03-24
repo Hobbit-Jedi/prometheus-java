@@ -44,6 +44,17 @@ public class Rules {
 	}
 	
 	/**
+	 * Скопировать правила игры.
+	 * @param aRules - Правила игры с которых создается копия.
+	 */
+	public Rules(Rules aRules)
+	{
+		this(aRules.getBoardXSize(), aRules.getBoardYSize(), aRules.getWinLineLength(), aRules.getNumErrorsAllowed(), aRules.getNumOfPlayers());
+		Player[] rulesPlayers = aRules.getPlayers();
+		System.arraycopy(rulesPlayers, 0, mPlayers, 0, rulesPlayers.length);
+	}
+	
+	/**
 	 * Получить ширину игровой доски.
 	 * @return - Ширина игровой доски.
 	 */

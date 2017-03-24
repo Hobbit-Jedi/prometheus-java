@@ -23,10 +23,11 @@ public class PlayerRandom extends Player {
 	/**
 	 * Выполнить ход.
 	 * @param aBoard - Игровое поле, на котором идет игра.
+	 * @param aRules - Правила, по которым проводится игра.
 	 * @return - Ход, который собирается делать игрок.
 	 */
 	@Override
-	public Move turn(Board aBoard)
+	public Move turn(Board aBoard, Rules aRules)
 	{
 		final int boardXSize = aBoard.getXSize();
 		final int boardYSize = aBoard.getYSize();

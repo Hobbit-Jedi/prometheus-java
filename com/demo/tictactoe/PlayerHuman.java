@@ -19,8 +19,14 @@ public class PlayerHuman extends Player {
 		super(aName, aFigure);
 	}
 
+	/**
+	 * Выполнить ход.
+	 * @param aBoard - Игровое поле, на котором идет игра.
+	 * @param aRules - Правила, по которым проводится игра.
+	 * @return - Ход, который собирается делать игрок.
+	 */
 	@Override
-	public Move turn(Board aBoard)
+	public Move turn(Board aBoard, Rules aRules)
 	{
 		System.out.println();
 		System.out.println("Ходит игрок " + mName);

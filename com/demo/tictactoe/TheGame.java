@@ -1,7 +1,6 @@
 package com.demo.tictactoe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -41,7 +40,7 @@ public class TheGame {
 		{			
 			rules = mainMenu(rules);
 			Board board     = new Board(rules.getBoardXSize(), rules.getBoardYSize());
-			Referee referee = new Referee(rules.getWinLineLength(), rules.getNumErrorsAllowed());
+			Referee referee = new Referee(rules);
 			createPlayers(rules);
 			System.out.println();
 			System.out.println("--------------");
@@ -65,7 +64,7 @@ public class TheGame {
 					if (player != null)
 					{
 						do {			
-							move = player.turn(new Board(board));
+							move = player.turn(new Board(board), new Rules(rules));
 							System.out.println();
 							System.out.println("Игрок " + player + " ходит " + move);
 							moveResult = referee.commitMove(player, move, board);

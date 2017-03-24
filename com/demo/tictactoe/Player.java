@@ -43,7 +43,8 @@ public abstract class Player {
 	/**
 	 * Выполнить ход.
 	 * @param aBoard - Игровое поле, на котором идет игра.
+	 * @param aRules - Правила, по которым проводится игра.
 	 * @return - Ход, который собирается делать игрок.
 	 */
-	abstract public Move turn(Board aBoard);
+	abstract public Move turn(Board aBoard, Rules aRules);
 }

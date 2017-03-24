@@ -85,7 +85,7 @@ public class Board {
 	 */
 	public ActionFigure lookAt(int aX, int aY) throws IllegalArgumentException
 	{
-		if (aX >= 0 && aX < mXSize && aY >= 0 && aY < mYSize)
+		if (isCoordinateAtBoard(aX, aY))
 		{
 			return mField[aY][aX];
 		}
@@ -116,7 +116,7 @@ public class Board {
 	 */
 	public void setAt(int aX, int aY, ActionFigure aFigure) throws IllegalArgumentException
 	{
-		if (aX >= 0 && aX < mXSize && aY >= 0 && aY < mYSize)
+		if (isCoordinateAtBoard(aX, aY))
 		{
 			mField[aY][aX] = aFigure;
 		}

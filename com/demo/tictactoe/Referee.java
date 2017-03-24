@@ -1,22 +1,23 @@
 package com.demo.tictactoe;
 
+/**
+ * Описывает судью, следящего за выполнением правил игры.
+ * @author Hobbit Jedi
+ */
 public class Referee {
-	private final int m_NumToLineForWin;    // Количество фигур в линию для победы.
-	private final int m_MaxBadTurnsAllowed; // Допустимое количество попыток неправильно походить до дисквалификации игрока (<0 - неограничено).
-	private Player m_LastPlayer;            // Игрок, который ходил последним. Хранится между ходами.
-	private int m_PlayerTurnTriesCounter;   // Счетчик попыток хода игрока. Если игрок тупит и долго не может сделать правильный ход, то его дисквалифицируют.
+	private final Rules mRules;          // Правила, по которым проводится игра.
+	private Player mLastPlayer;          // Игрок, который ходил последним. Хранится между ходами.
+	private int mPlayerTurnTriesCounter; // Счетчик попыток хода игрока. Если игрок тупит и долго не может сделать правильный ход, то его дисквалифицируют.
 	
 	/**
 	 * Создает судью, который будет следить за выполнением правил игры.
-	 * @param aNumToLineForWin - Количество фигур, которые нужно выстроить в линию, чтобы выиграть.
-	 * @param aMaxBadTurnsAllowed - Количество попыток некорректно походить, до дисквалификации игрока.
+	 * @param aRules - Правила, по которым проводится игра.
 	 */
-	public Referee(int aNumToLineForWin, int aMaxBadTurnsAllowed)
+	public Referee(Rules aRules)
 	{
-		m_NumToLineForWin = aNumToLineForWin;
-		m_MaxBadTurnsAllowed = aMaxBadTurnsAllowed;
-		m_LastPlayer = null;
-		m_PlayerTurnTriesCounter = 0;
+		mRules = aRules;
+		mLastPlayer = null;
+		mPlayerTurnTriesCounter = 0;
 	}
 	
 	/**
@@ -31,21 +32,21 @@ public class Referee {
 	public MoveResult commitMove(Player aPlayer, Move aMove, Board aBoard)
 	{
 		MoveResult result = null;
-		if (aPlayer != m_LastPlayer)
+		if (aPlayer != mLastPlayer)
 		{
-			m_LastPlayer = aPlayer;
-			m_PlayerTurnTriesCounter = 1;
+			mLastPlayer = aPlayer;
+			mPlayerTurnTriesCounter = 1;
 		}
 		else
 		{
-			m_PlayerTurnTriesCounter++;
+			mPlayerTurnTriesCounter++;
 		}
 		if (aMove != null)
 		{
 			// Проверим допустимость хода.
 			int x = aMove.getX();
 			int y = aMove.getY();
-			if (x >= 0 && x < aBoard.getXSize() && y >= 0 && y < aBoard.getYSize())
+			if (aBoard.isCoordinateAtBoard(x, y))
 			{
 				if (aBoard.lookAt(x, y) == null)
 				{
@@ -82,7 +83,7 @@ public class Referee {
 				System.out.println("Игрок " + aPlayer + " не знает куда ему пойти.");
 			}
 		}
-		if (result == null && m_MaxBadTurnsAllowed >= 0 && m_PlayerTurnTriesCounter >= m_MaxBadTurnsAllowed)
+		if (result == null && mRules.getNumErrorsAllowed() >= 0 && mPlayerTurnTriesCounter > mRules.getNumErrorsAllowed())
 		{
 			result = MoveResult.DISQUALIFICATION;
 		}
@@ -115,7 +116,7 @@ public class Referee {
 			{
 				if (dx != 0 || dy != 0) // Центральную клетку не изменяем.
 				{
-					int directionLength = m_NumToLineForWin;
+					int directionLength = mRules.getWinLineLength();
 					switch (dx)
 					{
 						case -1:
@@ -161,7 +162,7 @@ public class Referee {
 		int maxLine = Math.max(figuresInRow, figuresInColumn);
 		maxLine = Math.max(maxLine, figuresInDiagonal1);
 		maxLine = Math.max(maxLine, figuresInDiagonal2);
-		result = (maxLine >= m_NumToLineForWin);
+		result = (maxLine >= mRules.getWinLineLength());
 		
 		return result;
 	}
