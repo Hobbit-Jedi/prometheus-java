@@ -64,7 +64,7 @@ public class TheGame {
 					if (player != null)
 					{
 						do {			
-							move = player.turn(new Board(board), new Rules(rules));
+							move = player.turn(new Board(board));
 							System.out.println();
 							System.out.println("Игрок " + player + " ходит " + move);
 							moveResult = referee.commitMove(player, move, board);
@@ -199,6 +199,9 @@ public class TheGame {
 				System.out.println("Создание игрока №" + i + (mIsRulesClassic ? " (" + figures[i] + ")" : "") + ":");
 				players[i] = createPlayer(figures);
 			}
+			System.out.print("Игрок №" + i + " " + players[i] + "(" + players[i].getFigure() + ") знакомится с правилами");
+			players[i].checkOutRules(new Rules(aRules));
+			System.out.println(" - Готово!");
 			figures[players[i].getFigure().ordinal()] = null;
 		}
 	}

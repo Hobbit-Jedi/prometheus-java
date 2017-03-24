@@ -21,20 +21,19 @@ public class PlayerHuman extends Player {
 
 	/**
 	 * Выполнить ход.
-	 * @param aBoard - Игровое поле, на котором идет игра.
-	 * @param aRules - Правила, по которым проводится игра.
+	 * @param aBoard - Слепок текущей ситуации на игровом поле.
 	 * @return - Ход, который собирается делать игрок.
 	 */
 	@Override
-	public Move turn(Board aBoard, Rules aRules)
+	public Move turn(Board aBoard)
 	{
 		System.out.println();
 		System.out.println("Ходит игрок " + mName);
-		Coordinates coordinates = scanCoordinates(aBoard.getXSize(), aBoard.getYSize());
+		Coordinates coordinates = scanCoordinates();
 		return new Move(coordinates, this);
 	}
 	
-	private Coordinates scanCoordinates(int aXSize, int aYSize)
+	private Coordinates scanCoordinates()
 	{
 		Coordinates result;
 		String inputX;

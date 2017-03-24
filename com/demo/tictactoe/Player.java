@@ -1,5 +1,7 @@
 package com.demo.tictactoe;
 
+import java.util.Objects;
+
 /**
  * Описывает Игрока в целом (как абстрактную сущность).
  * Набор его интерфейсных методов и хранимых полей.
@@ -9,7 +11,8 @@ package com.demo.tictactoe;
 public abstract class Player {
 	protected final ActionFigure mFigure; // Фигура, которой будет играть игрок.
 	protected final String mName;         // Имя игрока.
-
+	protected Rules mRules;               // Правила, по которым ведется игра.
+	
 	/**
 	 * Создает игрока, назначая ему игровую фигуру.
 	 * @param aName - Имя игрока.
@@ -41,10 +44,51 @@ public abstract class Player {
 	}
 	
 	/**
+	 * Проверить совпадает ли данный игрок с другим игроком.
+	 * @param obj - Игрок, с которым выполняется сравнение текущего игрока.
+	 * @return - Признак того, что указанный игрок совпадает с текущим игроком.
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Player other = (Player) obj;
+		boolean result = (this.mFigure == other.mFigure) && this.mName.equals(other.mName);
+		return result;
+	}
+	
+	/**
+	 * Вычислить хэш-код объекта.
+	 * @return - хэш-код объекта.
+	 */
+	@Override
+	public int hashCode()
+	{
+		int hash = mName.hashCode() + Objects.hashCode(mFigure);
+		return hash;
+	}
+	
+	/**
+	 * Ознакомиться с правилами.
+	 * @param aRules - Правила, по которым будет вестись игра.
+	 */
+	public void checkOutRules(Rules aRules)
+	{
+		mRules = aRules;
+	}
+	
+	/**
 	 * Выполнить ход.
-	 * @param aBoard - Игровое поле, на котором идет игра.
-	 * @param aRules - Правила, по которым проводится игра.
+	 * @param aBoard - Слепок текущей ситуации на игровом поле.
 	 * @return - Ход, который собирается делать игрок.
 	 */
-	abstract public Move turn(Board aBoard, Rules aRules);
+	abstract public Move turn(Board aBoard);
 }

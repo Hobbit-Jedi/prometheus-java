@@ -19,7 +19,7 @@ public class Move {
 		mCoordinates = new Coordinates(aX, aY);
 		mPlayer = aPlayer;
 	}
-
+	
 	/**
 	 * Создать ход по указанному объекту координат.
 	 * @param aCoordinates - Координаты, в которые делается ход.
@@ -30,7 +30,16 @@ public class Move {
 		mCoordinates = aCoordinates;
 		mPlayer = aPlayer;
 	}
-
+	
+	/**
+	 * Получить координаты хода.
+	 * @return - Координаты хода.
+	 */
+	public Coordinates getCoordinates()
+	{
+		return mCoordinates;
+	}
+	
 	/**
 	 * Получить x-координату хода.
 	 * @return - x-координата (числовая) хода.
@@ -39,7 +48,7 @@ public class Move {
 	{
 		return mCoordinates.getX();
 	}
-
+	
 	/**
 	 * Получить y-координату хода.
 	 * @return - y-координата (числовая) хода.
@@ -48,7 +57,7 @@ public class Move {
 	{
 		return mCoordinates.getY();
 	}
-
+	
 	/**
 	 * Получить фигуру хода.
 	 * @return - Фигура, которой сделан ход.
@@ -66,7 +75,7 @@ public class Move {
 	{
 		return mPlayer;
 	}
-
+	
 	/**
 	 * Получить строковое представление хода.
 	 * @return - Строковое представление хода.
@@ -76,4 +85,38 @@ public class Move {
 	{
 		return new StringBuilder(getFigure().toString()).append(" -> (").append(mCoordinates).append(")").toString();
 	}
+	
+	/**
+	 * Проверить совпадает ли данный ход с другим ходом.
+	 * @param obj - Ход, с которым выполняется сравнение текущего хода.
+	 * @return - Признак того, что указанный ход совпадает с текущим ходом.
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Move other = (Move) obj;
+		boolean result = this.mCoordinates.equals(other.mCoordinates) && this.mPlayer.equals(other.mPlayer);
+		return result;
+	}
+	
+	/**
+	 * Вычислить хэш-код объекта.
+	 * @return - хэш-код объекта.
+	 */
+	@Override
+	public int hashCode()
+	{
+		int hash = (mCoordinates.hashCode()<<16) + (mPlayer.hashCode() & 0xFFFF);
+		return hash;
+	}
+	
 }

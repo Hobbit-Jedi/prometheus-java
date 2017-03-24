@@ -7,7 +7,7 @@ package com.demo.tictactoe;
 public class Coordinates {
 	private final int mX; // x-координата.
 	private final int mY; // y-координата.
-
+	
 	/**
 	 * Создать координаты.
 	 * @param aX - x-коодината (числовая).
@@ -56,18 +56,6 @@ public class Coordinates {
 	}
 	
 	/**
-	 * Проверить совпадают ли координаты текущего объекта с другим объектом координат.
-	 * @param obj - Координаты, с которыми выполняем сравнение текущего объекта.
-	 * @return - Признак того, что координаты указанного объекта координат совпадают с координатами текущего объектом координат.
-	 */
-	@Override
-	public boolean equals(Object obj)
-	{
-		boolean result = (obj instanceof Coordinates) && (mX == ((Coordinates) obj).getX()) && (mY == ((Coordinates) obj).getY());
-		return result;
-	}
-	
-	/**
 	 * Получить строковое представление координат,
 	 * @return - строковое представление координат.
 	 */
@@ -75,6 +63,39 @@ public class Coordinates {
 	public String toString()
 	{
 		return new StringBuilder(getXAsString()).append(",").append(mY).toString();
+	}
+	
+	/**
+	 * Проверить совпадают ли координаты текущего объекта с другим объектом координат.
+	 * @param obj - Координаты, с которыми выполняем сравнение текущего объекта.
+	 * @return - Признак того, что координаты указанного объекта координат совпадают с координатами текущего объектом координат.
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Coordinates other = (Coordinates) obj;
+		boolean result = (this.mX == other.mX) && (this.mY == other.mY);
+		return result;
+	}
+	
+	/**
+	 * Вычислить хэш-код объекта.
+	 * @return - хэш-код объекта.
+	 */
+	@Override
+	public int hashCode()
+	{
+		int hash = (mY<<16) + (mX & 0xFFFF);
+		return hash;
 	}
 	
 /**

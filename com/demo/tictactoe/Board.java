@@ -139,25 +139,35 @@ public class Board {
 	}
 	
 	/**
-	 * Проверить есть ли еще свободные клеточки?
-	 * @return - Признак того, что свободные клеточки на поле еще есть.
+	 * Найти первую попавшуюся свободную клеточку на поле.
+	 * @return - Координаты найденной свободной клеточки.
 	 */
-	public boolean hasMoreSpace()
+	public Coordinates searchFirstEmpty()
 	{
-		boolean result = false;
-		for (int y = 0; !result && y < mYSize; y++)
+		Coordinates result = null;
+		for (int y = 0; result == null && y < mYSize; y++)
 		{
-			for (int x = 0; !result && x < mXSize; x++)
+			for (int x = 0; result == null && x < mXSize; x++)
 			{
 				if (mField[y][x] == null)
 				{
-					result = true;
+					result = new Coordinates(x, y);
 				}
 			}
 		}
 		return result;
 	}
-
+	
+	/**
+	 * Проверить есть ли еще свободные клеточки?
+	 * @return - Признак того, что свободные клеточки на поле еще есть.
+	 */
+	public boolean hasMoreSpace()
+	{
+		boolean result = (searchFirstEmpty() != null);
+		return result;
+	}
+	
 	/**
 	 * Отображает игровое поле в консоли.
 	 */
