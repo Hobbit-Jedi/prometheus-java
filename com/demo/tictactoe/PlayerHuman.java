@@ -134,11 +134,4 @@ public class PlayerHuman extends Player {
 		return result;
 	}
 
-	@Override
-	protected void finalize() throws Throwable
-	{
-		SCANNER.close();
-		super.finalize();
-	}
-	
 }
