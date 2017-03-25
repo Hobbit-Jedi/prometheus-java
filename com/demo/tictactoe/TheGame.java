@@ -64,7 +64,7 @@ public class TheGame {
 					if (player != null)
 					{
 						do {			
-							move = player.turn(new Board(board));
+							move = player.makeMove(new Board(board));
 							System.out.println();
 							System.out.println("Игрок " + player + " ходит " + move);
 							moveResult = referee.commitMove(player, move, board);
@@ -199,10 +199,15 @@ public class TheGame {
 				System.out.println("Создание игрока №" + i + (mIsRulesClassic ? " (" + figures[i] + ")" : "") + ":");
 				players[i] = createPlayer(figures);
 			}
+			figures[players[i].getFigure().ordinal()] = null;
+		}
+		// Знакомство с правилами делаем отдельным циклом, т.к. в правилах должны быть прописаны уже все участвующие игроки.
+		System.out.println();
+		for (int i = 0; i < players.length; i++)
+		{
 			System.out.print("Игрок №" + i + " " + players[i] + "(" + players[i].getFigure() + ") знакомится с правилами");
 			players[i].checkOutRules(new Rules(aRules));
 			System.out.println(" - Готово!");
-			figures[players[i].getFigure().ordinal()] = null;
 		}
 	}
 	
@@ -235,27 +240,44 @@ public class TheGame {
 		}
 		else
 		{
-			while (true)
+			int figuresCount = 0;
+			for (int i = 0; i < figures.length; i++)
 			{
-				System.out.println();
-				System.out.println("Выберите фигуру, которой будет ходить игрок:");
-				for (int i = 0; i < figures.length; i++)
+				if (figures[i] != null)
 				{
-					if (figures[i] != null)
-					{
-						System.out.println("	" + i + " - " + figures[i]);
-					}
+					figuresCount++;
+					choose = i;
 				}
-				choose = scanInt("Сделайте выбор:");
-				if (choose >=0 && choose < figures.length && figures[choose] != null)
-				{
-					break;
-				}
-				else
+			}
+			if (figuresCount > 1)
+			{
+				while (true)
 				{
 					System.out.println();
-					System.out.println("Сделайте правильный выбор.");
+					System.out.println("Выберите фигуру, которой будет ходить игрок:");
+					for (int i = 0; i < figures.length; i++)
+					{
+						if (figures[i] != null)
+						{
+							System.out.println("	" + i + " - " + figures[i]);
+						}
+					}
+					choose = scanInt("Сделайте выбор:");
+					if (choose >=0 && choose < figures.length && figures[choose] != null)
+					{
+						break;
+					}
+					else
+					{
+						System.out.println();
+						System.out.println("Сделайте правильный выбор.");
+					}
 				}
+			}
+			else
+			{
+				System.out.println();
+				System.out.println("Осталась единственная фигура: " + figures[choose]);
 			}
 			figure = figures[choose];
 		}

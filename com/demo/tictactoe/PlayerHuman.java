@@ -25,7 +25,7 @@ public class PlayerHuman extends Player {
 	 * @return - Ход, который собирается делать игрок.
 	 */
 	@Override
-	public Move turn(Board aBoard)
+	public Move makeMove(Board aBoard)
 	{
 		System.out.println();
 		System.out.println("Ходит игрок " + mName);

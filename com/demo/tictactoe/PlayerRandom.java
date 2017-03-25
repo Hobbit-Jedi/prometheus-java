@@ -26,7 +26,7 @@ public class PlayerRandom extends Player {
 	 * @return - Ход, который собирается делать игрок.
 	 */
 	@Override
-	public Move turn(Board aBoard)
+	public Move makeMove(Board aBoard)
 	{
 		final int boardXSize = aBoard.getXSize();
 		final int boardYSize = aBoard.getYSize();

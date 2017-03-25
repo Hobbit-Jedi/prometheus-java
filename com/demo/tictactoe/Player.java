@@ -86,9 +86,18 @@ public abstract class Player {
 	}
 	
 	/**
+	 * Принять оповещение о сделанном в игре ходе.
+	 * @param aMove - Ход, который сделан во время игры.
+	 */
+	public void moveNotificationHandler(Move aMove)
+	{
+		// Реализация по умолчанию игнорирует информацию о проделанных ходах.
+	}
+	
+	/**
 	 * Выполнить ход.
 	 * @param aBoard - Слепок текущей ситуации на игровом поле.
 	 * @return - Ход, который собирается делать игрок.
 	 */
-	abstract public Move turn(Board aBoard);
+	abstract public Move makeMove(Board aBoard);
 }

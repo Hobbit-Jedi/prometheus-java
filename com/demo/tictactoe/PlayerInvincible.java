@@ -1,12 +1,21 @@
 package com.demo.tictactoe;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * Описывает игрока, который применяет безпроигрышную стратегию.
  * @author Hobbit Jedi
  */
 public class PlayerInvincible extends Player {
 
-	GameState mRootState; // Дерево ходов игры.
+	/**
+	 * Дерево ходов игры.
+	 * Хранит возможные хода игры с оценками возможности победы того или иного игрока на каждом ходу.
+	 */
+	protected static GameTreeNode mGameTree;
+	
+	private GameTreeNode mCurrentNode; // Узел дерева ходов игры, соответствующий текущей игровой ситуации.
 	
 	/**
 	 * Создает игрока, назначая ему игровую фигуру.
@@ -16,7 +25,8 @@ public class PlayerInvincible extends Player {
 	public PlayerInvincible(String aName, ActionFigure aFigure)
 	{
 		super(aName, aFigure);
-		mRootState = null;
+		mGameTree = null;
+		mCurrentNode = mGameTree;
 	}
 
 	/**
@@ -26,11 +36,22 @@ public class PlayerInvincible extends Player {
 	@Override
 	public void checkOutRules(Rules aRules) {
 		super.checkOutRules(aRules);
-		if (mRootState == null || !mRules.equals(aRules))
+		if (mGameTree == null || !mRules.equals(aRules))
 		{
-			mRootState = new GameState(new Board(aRules.getBoardXSize(), aRules.getBoardYSize()));
-			mRootState.growTree(aRules, 0);
+			mGameTree = new GameTreeNode(new Board(aRules.getBoardXSize(), aRules.getBoardYSize()), new Rules(aRules), null, -1);
 		}
+		mCurrentNode = mGameTree;
+	}
+	
+	/**
+	 * Принять оповещение о сделанном в игре ходе.
+	 * @param aMove - Ход, который сделан во время игры.
+	 */
+	@Override
+	public void moveNotificationHandler(Move aMove)
+	{
+		super.moveNotificationHandler(aMove);
+		mCurrentNode = mCurrentNode.getMovesMap().get(aMove);
 	}
 	
 	/**
@@ -39,10 +60,38 @@ public class PlayerInvincible extends Player {
 	 * @return - Ход, который собирается делать игрок.
 	 */
 	@Override
-	public Move turn(Board aBoard)
+	public Move makeMove(Board aBoard)
 	{
-		//TODO: реализовать.
-		Move result = new Move(0,0, this); //TODO: убрать эту отладочную заглушку.
+		Move result = null;
+		ArrayList<Map.Entry<Move, GameTreeNode>> bestEntries = new ArrayList<>();
+		double bestWeight = Double.NEGATIVE_INFINITY;
+		for (Map.Entry<Move, GameTreeNode> entry: mCurrentNode.getMovesMap().entrySet())
+		{
+			if (bestEntries.isEmpty())
+			{
+				bestEntries.add(entry);
+				bestWeight = entry.getValue().getPositionWeight(mFigure);
+			}
+			else
+			{
+				double currentWeight = entry.getValue().getPositionWeight(mFigure);
+				if (bestWeight == currentWeight)
+				{
+					bestEntries.add(entry);
+				}
+				else if (bestWeight < currentWeight)
+				{
+					bestEntries.clear();
+					bestEntries.add(entry);
+					bestWeight = entry.getValue().getPositionWeight(mFigure);
+				}
+			}
+		}
+		if (!bestEntries.isEmpty())
+		{
+			int moveIndex = (int)(Math.random()*bestEntries.size());
+			result = bestEntries.get(moveIndex).getKey();
+		}
 		return result;
 	}
 }

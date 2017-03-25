@@ -51,6 +51,11 @@ public class Referee {
 				{
 					// Если ход допустим, то отметим его на доске.
 					aBoard.setAt(cellToMove, aMove.getFigure());
+					// Оповестим всех игроков о проделанном ходе.
+					for (Player player: mRules.getPlayers())
+					{
+						player.moveNotificationHandler(aMove);
+					}
 					// Определим результат хода.
 					if (mRules.isWin(aMove, aBoard))
 					{
