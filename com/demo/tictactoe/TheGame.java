@@ -67,7 +67,8 @@ public class TheGame {
 							move = player.makeMove(new Board(board));
 							System.out.println();
 							System.out.println("Игрок " + player + " ходит " + move);
-							moveResult = referee.commitMove(player, move, board);
+							Player[] playersCopy = new Player[0];
+							moveResult = referee.commitMove(player, move, board, players.toArray(playersCopy));
 						} while (moveResult == null); // Пока Игроку есть куда ходить, но он делает некорректные хода.
 						board.print();
 						switch (moveResult)

@@ -46,12 +46,38 @@ public class PlayerInvincible extends Player {
 	/**
 	 * Принять оповещение о сделанном в игре ходе.
 	 * @param aMove - Ход, который сделан во время игры.
+	 * @param aMoveResult - Результат сделанного хода.
+	 * @param aBoard - Состояние игровой доски после выполнения хода.
+	 * @param aPlayers - Массив еще оставшихся в игре игроков.
 	 */
 	@Override
-	public void moveNotificationHandler(Move aMove)
+	public void moveNotificationHandler(Move aMove, MoveResult aMoveResult, Board aBoard, Player[] aPlayers)
 	{
-		super.moveNotificationHandler(aMove);
-		mCurrentNode = mCurrentNode.getMovesMap().get(aMove);
+		super.moveNotificationHandler(aMove, aMoveResult, aBoard, aPlayers);
+		if (aMoveResult != null)
+		{
+			switch (aMoveResult)
+			{
+				case CONTINUE:
+					mCurrentNode = mCurrentNode.getMovesMap().get(aMove);
+					break;
+				case DISQUALIFICATION:
+					int prevPlayerIndex = -1;
+					for (Player player: aPlayers)
+					{
+						if (this.equals(player))
+						{
+							break;
+						}
+						if (player != null)
+						{
+							prevPlayerIndex++;
+						}
+					}
+					mCurrentNode = new GameTreeNode(aBoard, mRules, aMove, prevPlayerIndex);
+					break;
+			}
+		}
 	}
 	
 	/**

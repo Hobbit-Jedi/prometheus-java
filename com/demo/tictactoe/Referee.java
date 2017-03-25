@@ -26,10 +26,11 @@ public class Referee {
 	 * @param aPlayer - Игрок, который совершает ход.
 	 * @param aMove   - Проверяемый ход.
 	 * @param aBoard  - Доска, к которой будет применен ход.
+	 * @param aPlayers - Еще оставшиеся в игре игроки.
 	 * @return - Результат выполнения хода.
 	 *           Если ход недопустим, то возвращает null.
 	 */
-	public MoveResult commitMove(Player aPlayer, Move aMove, Board aBoard)
+	public MoveResult commitMove(Player aPlayer, Move aMove, Board aBoard, Player[] aPlayers)
 	{
 		MoveResult result = null;
 		if (aPlayer != mLastPlayer)
@@ -47,15 +48,11 @@ public class Referee {
 			Coordinates cellToMove = aMove.getCoordinates();
 			if (aBoard.isCoordinateAtBoard(cellToMove))
 			{
-				if (aBoard.lookAt(cellToMove) == null)
+				ActionFigure figure = aBoard.lookAt(cellToMove);
+				if (figure == null)
 				{
 					// Если ход допустим, то отметим его на доске.
 					aBoard.setAt(cellToMove, aMove.getFigure());
-					// Оповестим всех игроков о проделанном ходе.
-					for (Player player: mRules.getPlayers())
-					{
-						player.moveNotificationHandler(aMove);
-					}
 					// Определим результат хода.
 					if (mRules.isWin(aMove, aBoard))
 					{
@@ -69,6 +66,11 @@ public class Referee {
 					{
 						result = MoveResult.DEADLOCK;
 					}
+					System.out.println("Ход игрока " + aPlayer + " принят: " + aMove);
+				}
+				else
+				{
+					System.out.println("Указанная игроком " + aPlayer + " клеточка (" + aMove.getCoordinates() + ") уже занята фигурой " + figure);
 				}
 			}
 			else
@@ -90,6 +92,19 @@ public class Referee {
 		if (result == null && mRules.getNumErrorsAllowed() >= 0 && mPlayerTurnTriesCounter > mRules.getNumErrorsAllowed())
 		{
 			result = MoveResult.DISQUALIFICATION;
+			for (int i = 0; i < aPlayers.length; i++)
+			{
+				if (aPlayers[i] == aPlayer)
+				{
+					aPlayers[i] = null;
+					break;
+				}
+			}
+		}
+		// Оповестим всех игроков о проделанном ходе.
+		for (Player player: mRules.getPlayers())
+		{
+			player.moveNotificationHandler(aMove, result, new Board(aBoard), aPlayers.clone());
 		}
 		return result;
 	}

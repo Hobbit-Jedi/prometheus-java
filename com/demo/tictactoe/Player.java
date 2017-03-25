@@ -88,8 +88,11 @@ public abstract class Player {
 	/**
 	 * Принять оповещение о сделанном в игре ходе.
 	 * @param aMove - Ход, который сделан во время игры.
+	 * @param aMoveResult - Результат сделанного хода.
+	 * @param aBoard - Состояние игровой доски после выполнения хода.
+	 * @param aPlayers - Массив еще оставшихся в игре игроков.
 	 */
-	public void moveNotificationHandler(Move aMove)
+	public void moveNotificationHandler(Move aMove, MoveResult aMoveResult, Board aBoard, Player[] aPlayers)
 	{
 		// Реализация по умолчанию игнорирует информацию о проделанных ходах.
 	}
