@@ -77,6 +77,7 @@ public class PlayerHuman extends Player {
 									{
 										parts[0] = scanInput.substring(0, i);
 										parts[1] = scanInput.substring(i);
+										break;
 									}
 								}
 							}

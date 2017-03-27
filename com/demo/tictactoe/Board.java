@@ -173,9 +173,20 @@ public class Board {
 	 */
 	public void print()
 	{
-		final char lineCross      = '+';
-		final char lineHorizontal = '-';
-		final char lineVertical   = '|';
+		final char lineTopLeftCorner     = '\u250C'; // ┌
+		final char lineTopRightCorner    = '\u2510'; // ┐
+		final char lineBottomLeftCorner  = '\u2514'; // └
+		final char lineBottomRightCorner = '\u2518'; // ┘
+		final char lineHorizontal        = '\u2500'; // ─
+		final char lineHorizontalDown    = '\u252C'; // ┬
+		final char lineHorizontalUp      = '\u2534'; // ┴
+		final char lineVertical          = '\u2502'; // │
+		final char lineVerticalRight     = '\u251C'; // ├
+		final char lineVerticalLeft      = '\u2524'; // ┤
+		final char lineCross             = '\u253C'; // ┼
+		final char spaceFullCell         = '\u3000'; // Специальный широкий пробел, который как раз по размеру в ячейку попадает.
+		final char spaceAroundLetter     = '\u2006'; // Специальный узкий пробел, которым надо обрамить букву или цифру, чтобы они в ячейку вписались.
+		
 		int xCoordinateLength = Coordinates.indexToCoordinate(mXSize-1).length();
 		int yCoordinateLength = new StringBuilder().append(mYSize-1).length();
 		// Преобразуем числовые X-индексы в буквенные координаты.
@@ -184,8 +195,9 @@ public class Board {
 		{
 			xCoordinates[x] = Coordinates.indexToCoordinate(x);
 		}
-		// Сформируем горизонтальную разделительную линию таблицы.
 		StringBuilder divideLine = new StringBuilder();
+		// Сформируем горизонтальную разделительную линию таблицы.
+		divideLine.append(lineVerticalRight);
 		for (int j = 0; j < yCoordinateLength; j++)
 		{
 			divideLine.append(lineHorizontal);
@@ -194,15 +206,28 @@ public class Board {
 		{
 			divideLine.append(lineCross).append(lineHorizontal);
 		}
-		divideLine.append(lineCross);
+		divideLine.append(lineVerticalLeft);
 		// Начинаем вывод.
 		System.out.println();
+		// Выведем верхнюю рамку поля.
+		System.out.print(lineTopLeftCorner);
+		for (int j = 0; j < yCoordinateLength; j++)
+		{
+			System.out.print(lineHorizontal);
+		}
+		for (int x = 0; x < mXSize; x++)
+		{
+			System.out.print(lineHorizontalDown);
+			System.out.print(lineHorizontal);
+		}
+		System.out.println(lineTopRightCorner);
 		// Выведем X-координаты.
 		for (int i = 0; i < xCoordinateLength; i++)
 		{
+			System.out.print(lineVertical);
 			for (int j = 0; j < yCoordinateLength; j++)
 			{
-				System.out.print(" ");
+				System.out.print(spaceFullCell);
 			}
 			for (int x = 0; x < mXSize; x++)
 			{
@@ -210,11 +235,13 @@ public class Board {
 				System.out.print(lineVertical);
 				if (i >= xCoordinateLength - xCoordCurrentLen)
 				{
+					System.out.print(spaceAroundLetter);
 					System.out.print(xCoordinates[x].charAt(i - xCoordinateLength + xCoordCurrentLen));
+					System.out.print(spaceAroundLetter);
 				}
 				else
 				{
-					System.out.print(" ");
+					System.out.print(spaceFullCell);
 				}
 			}
 			System.out.println(lineVertical);
@@ -224,7 +251,16 @@ public class Board {
 		// Выводим само поле.
 		for (int y = 0; y < mYSize; y++)
 		{
+			System.out.print(lineVertical);
+			for (int spaceCounter = 0; spaceCounter < yCoordinateLength; spaceCounter++)
+			{
+				System.out.print(spaceAroundLetter);
+			}
 			System.out.format("%"+yCoordinateLength+"d", y); // Выводим Y-координату
+			for (int spaceCounter = 0; spaceCounter < yCoordinateLength; spaceCounter++)
+			{
+				System.out.print(spaceAroundLetter);
+			}
 			for (int x = 0; x < mXSize; x++)
 			{
 				System.out.print(lineVertical);
@@ -232,12 +268,27 @@ public class Board {
 									?
 									mField[y][x]
 									:
-									" "
+									spaceFullCell
 								);
 			}
 			System.out.println(lineVertical);
-			System.out.println(divideLine);
+			if (y != mYSize - 1) // После последней строки разделительную линию не выводим.
+			{
+				System.out.println(divideLine);
+			}
 		}
+		// Выведем нижнюю рамку поля.
+		System.out.print(lineBottomLeftCorner);
+		for (int j = 0; j < yCoordinateLength; j++)
+		{
+			System.out.print(lineHorizontal);
+		}
+		for (int x = 0; x < mXSize; x++)
+		{
+			System.out.print(lineHorizontalUp);
+			System.out.print(lineHorizontal);
+		}
+		System.out.println(lineBottomRightCorner);
 	}
 	
 }

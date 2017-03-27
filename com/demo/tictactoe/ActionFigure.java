@@ -5,11 +5,11 @@ package com.demo.tictactoe;
  * @author Hobbit Jedi
  */
 public enum ActionFigure {
-	CROSS('X'),  //крестик
-	NOUGHT('0'), //нолик
-	STAR('*'),   //звездочка
-	HASH('#'),   //решетка
-	DOG('@')     //собачка
+	CROSS('\u2573'),  //крестик
+	NOUGHT('\u2B58'), //нолик
+	STAR('\u26E4'),   //звезда
+	STOP('\u26D4'),   //знак СТОП
+	CHECK('\u2705')   //галочка
 	;
 	
 	private final char mImage; // Отображаемый символ.
