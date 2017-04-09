@@ -7,7 +7,7 @@ import java.util.Scanner;
  * @author Hobbit Jedi
  */
 public class PlayerHuman extends Player {
-	private static final Scanner SCANNER = new Scanner(System.in).useDelimiter("\\n"); // Поток ввода данных от пользователя.
+	private static final Scanner SCANNER = new Scanner(System.in).useDelimiter("(\\n+\\r*)|(\\r+\\n*)"); // Поток ввода данных от пользователя.
 	
 	/**
 	 * Создает игрока, назначая ему игровую фигуру.
